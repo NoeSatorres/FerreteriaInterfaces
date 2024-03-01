@@ -37,6 +37,18 @@ def obtener_articulos():
     return jsonify(articulo_json),200
 
 #Buscar articulos
+@app.route('/articulo/buscar', methods = ['POST'])
+def buscar_articulos():
+    data = request.get_json()
+    codigo = data.get('codigo')
+    if codigo:
+        articulo = Articulo.query.filter_by(codigo=codigo).first()
+        if articulo:
+            articulo_json = [{'nombre': articulo.nombre, 'codigo': articulo.codigo, 'precio': articulo.precio}]
+            return jsonify(articulo_json),200
+    return jsonify({'message': 'Articulo no encontrado'}),400
+
+
 
     
 if __name__=='__main__':
