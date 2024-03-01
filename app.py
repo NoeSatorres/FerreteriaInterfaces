@@ -27,6 +27,18 @@ def agregar_articulo():
     db.session.add(nuevo_articulo)
     db.session.commit()
     return jsonify({'message': 'Se agrego un articulo'}), 200
+
+
+#Listar articulos
+@app.route('/articulo', methods=['GET'])
+def obtener_articulos():
+    articulo = Articulo.query.all()
+    articulo_json = [{'nombre': articulo.nombre, 'codigo': articulo.codigo, 'precio': articulo.precio}for articulo in articulo]
+    return jsonify(articulo_json),200
+
+#Buscar articulos
+
+    
 if __name__=='__main__':
     with app.app_context():
         db.create_all()
