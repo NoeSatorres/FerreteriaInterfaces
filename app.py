@@ -47,7 +47,20 @@ def buscar_articulos():
             articulo_json = [{'nombre': articulo.nombre, 'codigo': articulo.codigo, 'precio': articulo.precio}]
             return jsonify(articulo_json),200
     return jsonify({'message': 'Articulo no encontrado'}),400
-
+# Modificar articulos
+@app.route('/articulo', methods=['PUT'])
+def modificar_articulos():
+    data = request.get_json()
+    codigo = data.get('codigo')
+    if codigo:
+        articulo = Articulo.query.filter_by(codigo=codigo).first()
+        if articulo:
+            # Utiliza data.get para obtener el valor de 'precio'
+            articulo.nombre = data.get('nombre', articulo.nombre)
+            articulo.precio = data.get('precio')
+            db.session.commit()
+            return jsonify({'message': 'Se modificó un articulo'}), 200
+    return jsonify({'message': 'Articulo no encontrado'}), 400
 
 
     
